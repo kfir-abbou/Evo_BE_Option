@@ -1,0 +1,9 @@
+{
+  "CommConfig": {
+    "RabbitConnectionBaseUri": "amqp://",
+    "UserName": "guest",
+    "Password": "guest",
+    "Ip": "localhost",
+    "Port": 5672
+  }
+}

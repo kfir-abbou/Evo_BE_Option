@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\Infra\Common.Config\Config\CatheterPosition.Service.Config.json" Link="Config\CatheterPosition.Service.Config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Infra\Common.Config\Config\comm.config.json" Link="Config\comm.config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infra\Common.Hub\Common.Hub.csproj" />
+    <ProjectReference Include="..\..\Infra\MessageBus.Infra\MessageBus.Infra.csproj" />
+    <ProjectReference Include="..\..\Models\CatheterPosition.Models\CatheterPosition.Models.csproj" />
+  </ItemGroup>
+
+</Project>

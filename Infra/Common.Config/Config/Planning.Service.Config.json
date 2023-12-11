@@ -1,0 +1,36 @@
+﻿{
+  "PlanningChannelsConfig": {
+    "ChannelsData": [
+      {
+        "Id": "GetAllPlansRequest",
+        "Exchange": "request",
+        "Queue": "",
+        "RoutingKey": "allPlans"
+      },
+      {
+        "Id": "GetSinglePlan",
+        "Exchange": "request",
+        "Queue": "",
+        "RoutingKey": "singlePlan"
+      },
+      {
+        "Id": "AddNewPlan",
+        "Exchange": "request",
+        "Queue": "",
+        "RoutingKey": "addNewPlan"
+      },
+      {
+        "Id": "AllPlansReply",
+        "Exchange": "reply",
+        "Queue": "",
+        "RoutingKey": "allPlans"
+      },
+      {
+        "Id": "SinglePlanReply",
+        "Exchange": "reply",
+        "Queue": "",
+        "RoutingKey": "singlePlan"
+      }
+    ]
+  }
+}

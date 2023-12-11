@@ -1,0 +1,30 @@
+﻿{
+  "CatheterPositionChannelsConfig": {
+    "ChannelsData": [
+      {
+        "Id": "MoveCatheter",
+        "Exchange": "request",
+        "Queue": "",
+        "RoutingKey": "MoveCatheter"
+      },
+      {
+        "Id": "GetCurrentPosition",
+        "Exchange": "request",
+        "Queue": "",
+        "RoutingKey": "GetCurrentPosition"
+      },
+      {
+        "Id": "ResetPosition",
+        "Exchange": "request",
+        "Queue": "",
+        "RoutingKey": "ResetPosition"
+      },
+      {
+        "Id": "CatheterPositionReply",
+        "Exchange": "reply",
+        "Queue": "",
+        "RoutingKey": "CatheterPosition"
+      }
+    ]
+  }
+}
