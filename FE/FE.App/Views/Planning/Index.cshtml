@@ -35,7 +35,7 @@
 	<div id="singlePlan"></div>
 
 	@section Scripts {
-		<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+		@* <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script> *@
 
 		<script>
 			//			var connection = new signalR.HubConnectionBuilder()
@@ -89,6 +89,7 @@
 			//					element.appendChild(date);
 			//					container.appendChild(element);
 			//				});
+			const baseUrl = "https://localhost:7241";
 
 			const getPlansBtn = document.getElementById("getPlans");
 			const getSinglePlansBtn = document.getElementById("getSinglePlans");
@@ -100,8 +101,8 @@
 
 			async function getPlans() {
 
-				// Make GET request
-				const response = await fetch('https://localhost:7241/api/Plans');
+				const url = `${baseUrl}/api/Plans`;
+				const response = await fetch(`${baseUrl}/api/Plans`);
 
 				// Check valid response
 				if (response.ok) {
@@ -116,10 +117,9 @@
 					});
 					const html = plans.map(plan => {
 						return `
-																		<div class="plan">
-																				<p>${plan.id} - ${plan.name} - ${plan.date.split('T')[0]}</p>
-																		</div>
-																	  `;
+						<div class="plan">
+							<p>${plan.id} - ${plan.name} - ${plan.date.split('T')[0]}</p>
+						</div>`;
 					});
 
 					// Display persons
@@ -135,11 +135,11 @@
 			async function getSinglePlan() {
 				var id = idInput.value;
 				var encodedId = encodeURIComponent(id);
-				if (id == "") {
+				if (id === "") {
 					alert("Id value cannot be empty");
 				}
 				else {
-					const url = `https://localhost:7241/api/Plans/${encodedId}`;
+					const url = `${baseUrl}/api/Plans/${encodedId}`;
 					const response = await fetch(url);
 
 					if (response.ok) {
@@ -147,53 +147,21 @@
 						// Deserialize response
 						const plan = await response.json();
 						const html = `<div class="single-plan">
-														<p>${plan.id} - ${plan.name} - ${plan.date.split('T')[0]}</p>
-												</div>`;
+																	<p>${plan.id} - ${plan.name} - ${plan.date.split('T')[0]}</p>
+															</div>`;
 
 
 						document.getElementById('singlePlan').innerHTML = html;
 					} else {
 						const html = `<div class="single-plan">
-																	<p>Error: resoponse status: ${response.status}</p>
-															</div>`;
+																				<p>Error: resoponse status: ${response.status}</p>
+																		</div>`;
 						console.log(response);
 						document.getElementById('singlePlan').innerHTML = html;
 					}
 
 				}
 			}
-			//					getSinglePlansBtn.addEventListener("click",
-			//						() => {
-			//							var id = idInput.value;
-			//							var encodedId = encodeURIComponent(id);
-			//							//					var url = `/Planning/GetPlanById?id=${encodedId}`;
-			//
-			//							if (id == "") {
-			//								alert("Id value cannot be empty");
-			//							} else {
-			//								const url = `/Plans/${encodedId}`;
-			//
-			//								fetch(url,
-			//									{
-			//										method: "GET",
-			//										headers: {
-			//											'Content-Type': 'application/json'
-			//										}
-			//									})
-			//									.then(response => {
-			//										if (response.ok) {
-			//
-			//										} else {
-			//											// handle error
-			//										}
-			//									})
-			//									.catch(error => {
-			//										console.error(error);
-			//									});
-			//								idInput.value = "";
-			//							}
-			//						});
-
 		</script>
 	}
 

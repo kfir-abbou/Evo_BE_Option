@@ -21,11 +21,11 @@ namespace MessageBusSystem.FE.Controllers
 			return Task.FromResult<IActionResult>(View());
 		}
 
-		// public Task<IActionResult> AddPlan()
-		// {
-		// 	// Call API Gateway endpoint
-		// 	return Task.FromResult<IActionResult>(View());
-		// }
+		public Task<IActionResult> AddPlan()
+		{
+			// Call API Gateway endpoint
+			return Task.FromResult<IActionResult>(View());
+		}
 
 
 		// [HttpGet]

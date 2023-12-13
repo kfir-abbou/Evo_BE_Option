@@ -19,57 +19,60 @@
 	<label for="planDate">Plan Date:</label>
 	<input type="date" id="planDate" required>
 
-	<button onclick="addPlan()">Add Plan</button>
+	<button id="addNewPlan">Add Plan</button>
 
-	<script>
-		function addPlan() {
+<div id="newPlanAdded"></div>
+@section Scripts
+{
+		<script>
 
-			//			document.getElementById("planId").value = 987987;
-			//			document.getElementById("planName").value = "Demo Plan";
-			//			document.getElementById("planDate").value = "2022-03-03";
+			const addPlanBtn = document.getElementById("addNewPlan");
+			addPlanBtn.addEventListener("click", addPlan);
 
-			// Get values from the input fields
-			var id = document.getElementById("planId").value;
-			var name = document.getElementById("planName").value;
-			var date = document.getElementById("planDate").value;
+			async function addPlan() {
 
-			// Create a Plan object
-			var plan = {
-				Id: id,
-				Name: name,
-				Date: date
-			};
+				const baseUrl = "https://localhost:7241";
 
-			// Make a POST request to add the plan
-			fetch("/Planning/AddNewPlan", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(plan)
-			})
-				.then(response => {
-					if (response.ok) {
-						//						return response.json();
-					} else {
-						throw new Error("Failed to add plan");
-					}
-				})
-				.then(data => {
-					// Handle the success response
-					console.log("Plan added successfully:", data);
-				})
-				.catch(error => {
-					// Handle errors
-					console.error("Error adding plan:", error.message);
-				});
+				// Get values from the input fields
+				var id = document.getElementById("planId").value;
+				var name = document.getElementById("planName").value;
+				var date = document.getElementById("planDate").value;
 
-			document.getElementById("planId").value = '';
-			document.getElementById("planName").value = '';
-			document.getElementById("planDate").value = '';
+				// Create a Plan object
+				var plan = {
+					Id: id,
+					Name: name,
+					Date: date
+				};
 
-		}
-	</script>
+				const options = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(plan)
+				};
+				const response = await fetch(`${baseUrl}/api/Plans`, options);
+
+				if (response.ok) {
+					const html = `<div class="newPlan">
+							<p>Plan with id: ${plan.Id} added successfully.</p>
+						</div>`;
+					document.getElementById('newPlanAdded').innerHTML = html;
+				} else {
+					console.log('error');
+				}
+
+				document.getElementById("planId").value = '';
+				document.getElementById("planName").value = '';
+				document.getElementById("planDate").value = '';
+			}
+
+
+			
+		</script>
+}
+	
 
 </body>
 </html>

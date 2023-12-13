@@ -12,6 +12,7 @@ namespace FE.App
 			var builder = WebApplication.CreateBuilder(args);
 
 			var config = initConfig();
+			
 
 			builder.Host.UseSerilog((context, configuration) =>
 				configuration.ReadFrom.Configuration(config));
@@ -78,10 +79,9 @@ namespace FE.App
 				throw new FileNotFoundException(loggingConfigFile);
 			}
 			var config = new ConfigurationBuilder()
-				.SetBasePath(Directory.GetCurrentDirectory())
 				.AddJsonFile(loggingConfigFile)
 				.Build();
-
+			
 			return config;
 		}
 	}

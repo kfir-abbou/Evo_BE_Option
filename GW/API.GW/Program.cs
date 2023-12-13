@@ -93,24 +93,16 @@ namespace API.GW
 		{
 			var execDirectory = System.Reflection.Assembly.GetExecutingAssembly().Location;
 			var appPath = Path.GetDirectoryName(execDirectory);
-			// var commConfigFile = Path.Combine(appPath, "Config", "comm.config.json");
-			// var planningConfigFile = Path.Combine(appPath, "Config", "Planning.Service.Config.json");
-			// var positionConfigFile = Path.Combine(appPath, "Config", "CatheterPosition.Service.Config.json");
 			var loggingConfigFile = Path.Combine(appPath, "Config", "Logging.Service.Config.json");
 
+
 			var config = builder.Configuration
-				// .AddJsonFile(commConfigFile)
-				// .AddJsonFile(planningConfigFile)
-				// .AddJsonFile(positionConfigFile)
 				.AddJsonFile(loggingConfigFile)
 				.AddEnvironmentVariables()
 				.SetBasePath(Environment.CurrentDirectory)
 				.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
 				.Build();
 
-			// builder.Services.Configure<CommConfig>(config.GetSection(nameof(CommConfig)));
-			// builder.Services.Configure<RabbitChannelConfig>(config.GetSection("CatheterPositionChannelsConfig"));
-			// builder.Services.Configure<RabbitChannelConfig>(config.GetSection("PlanningChannelsConfig"));
 			builder.Services.Configure<RabbitChannelConfig>(config.GetSection("LoggingChannelsConfig"));
 			return config;
 		}
