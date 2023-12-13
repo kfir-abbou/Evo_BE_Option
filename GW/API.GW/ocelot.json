@@ -14,7 +14,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Plans",
-      "UpstreamHttpMethod": [ "GET", "POST", "DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "POST"]
     },
     {
       "DownstreamPathTemplate": "/Plans/{id}",
@@ -26,7 +26,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Plans/{id}",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamHttpMethod": [ "GET", "DELETE" ]
     },
     //{
     //  "DownstreamPathTemplate": "/Plans",

@@ -85,8 +85,8 @@ namespace Planning.Service.Controllers
 		}
 
 		[HttpDelete]
-		[Route("/Plans")]
-		public Task Delete(string id)
+		[Route("/Plans/{id}")]
+		public async Task Delete(string id)
 		{
 			// // _logger.LogInformation($"[PlanningController::AddNewPlan]");
 			// // _messageProducer.SendLogRequest("[PlanningController::AddNewPlan]", LogLevel.Information, _logRequestChannel, _assemblyName);
@@ -104,8 +104,8 @@ namespace Planning.Service.Controllers
 			// }
 
 
-			_planningService.DeleteAsync(id);
-			return Task.CompletedTask;
+			await Task.Run(()=> _planningService.DeleteAsync(id)); // todo: change to real async 
+			// return Task.CompletedTask;
 		}
 
 	}

@@ -21,9 +21,9 @@
 
 	<button id="addNewPlan">Add Plan</button>
 
-<div id="newPlanAdded"></div>
-@section Scripts
-{
+	<div id="newPlanAdded"></div>
+	@section Scripts
+ {
 		<script>
 
 			const addPlanBtn = document.getElementById("addNewPlan");
@@ -52,16 +52,19 @@
 					},
 					body: JSON.stringify(plan)
 				};
-				const response = await fetch(`${baseUrl}/api/Plans`, options);
-
-				if (response.ok) {
-					const html = `<div class="newPlan">
-							<p>Plan with id: ${plan.Id} added successfully.</p>
-						</div>`;
-					document.getElementById('newPlanAdded').innerHTML = html;
-				} else {
-					console.log('error');
-				}
+				
+				await fetch(`${baseUrl}/api/Plans`, options)
+					.then(res => {
+						if (res.ok) {
+							const html = `<div class="newPlan">
+									<p>Plan with id: ${plan.Id} added successfully.</p>
+								</div>`;
+							document.getElementById('newPlanAdded').innerHTML = html;
+						} else {
+							console.log('error');
+						}
+					})
+					.catch(err => console.log(err));
 
 				document.getElementById("planId").value = '';
 				document.getElementById("planName").value = '';
@@ -69,10 +72,10 @@
 			}
 
 
-			
+
 		</script>
-}
-	
+	}
+
 
 </body>
 </html>

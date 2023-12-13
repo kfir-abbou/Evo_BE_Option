@@ -27,6 +27,12 @@
 		<button id="getSinglePlans">Get Plan</button>
 		<input type="text" id="planId">
 	</div>
+
+	<div id="deletePlansDiv">
+		<button id="delSinglePlans">Delete Plan</button>
+		<input type="text" id="planIdDelete">
+	</div>
+
 	<h1>List of Plans</h1>
 	<div id="plansData"></div>
 
@@ -93,11 +99,14 @@
 
 			const getPlansBtn = document.getElementById("getPlans");
 			const getSinglePlansBtn = document.getElementById("getSinglePlans");
+			const delPlansBtn = document.getElementById("delSinglePlans");
 			const idInput = document.getElementById("planId");
+			const deleteIdInput = document.getElementById("planIdDelete");
 
 			getPlansBtn.addEventListener("click", getPlans);
 			getSinglePlansBtn.addEventListener("click", getSinglePlan);
 
+			delPlansBtn.addEventListener("click", deletePlan);
 
 			async function getPlans() {
 
@@ -117,9 +126,9 @@
 					});
 					const html = plans.map(plan => {
 						return `
-						<div class="plan">
-							<p>${plan.id} - ${plan.name} - ${plan.date.split('T')[0]}</p>
-						</div>`;
+																											<div class="plan">
+																												<p>${plan.id} - ${plan.name} - ${plan.date.split('T')[0]}</p>
+																											</div>`;
 					});
 
 					// Display persons
@@ -154,12 +163,43 @@
 						document.getElementById('singlePlan').innerHTML = html;
 					} else {
 						const html = `<div class="single-plan">
-																				<p>Error: resoponse status: ${response.status}</p>
+																			<p>Error: resoponse status: ${response.status}</p>
 																		</div>`;
 						console.log(response);
 						document.getElementById('singlePlan').innerHTML = html;
 					}
+				}
+			}
 
+			async function deletePlan() {
+				var id = deleteIdInput.value;
+				var encodedId = encodeURIComponent(id);
+				if (id === "") {
+					alert("Id value cannot be empty");
+				}
+				else {
+
+					const url = `${baseUrl}/api/Plans/${encodedId}`;
+
+					const options = {
+						method: 'DELETE'
+					};
+
+					await fetch(url, options)
+						.then(res => {
+							if (res.ok) {
+							const html = `<div class="newPlan">
+											<p>Plan with id: ${id} deleted successfully.</p>
+										</div>`;
+								document.getElementById('singlePlan').innerHTML = html;
+							} else {
+								const html = `<div class="single-plan">
+												<p>Error: resoponse status: ${res.status}</p>
+											</div>`;
+								console.log(res);
+								document.getElementById('singlePlan').innerHTML = html;
+							}
+						});
 				}
 			}
 		</script>
