@@ -30,6 +30,10 @@
 	<h1>List of Plans</h1>
 	<div id="plansData"></div>
 
+	<h1>Plan:</h1>
+
+	<div id="singlePlan"></div>
+
 	@section Scripts {
 		<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 
@@ -91,6 +95,8 @@
 			const idInput = document.getElementById("planId");
 
 			getPlansBtn.addEventListener("click", getPlans);
+			getSinglePlansBtn.addEventListener("click", getSinglePlan);
+
 
 			async function getPlans() {
 
@@ -110,10 +116,10 @@
 					});
 					const html = plans.map(plan => {
 						return `
-						<div class="person">
-								<p>${plan.id} - ${plan.name} - ${plan.date.split('T')[0]}</p>
-						</div>
-					  `;
+																		<div class="plan">
+																				<p>${plan.id} - ${plan.name} - ${plan.date.split('T')[0]}</p>
+																		</div>
+																	  `;
 					});
 
 					// Display persons
@@ -126,77 +132,67 @@
 
 			}
 
-			//			getPlansBtn.addEventListener("click",
-			//				() => {
-			//					//					fetch("/Plans",
-			//					fetch("https://localhost:7241/api/Plans",
-			//						{
-			//							method: "GET"
-			//						})
-			//						.then(response => {
-			//							if (response.ok) {
-			//								console.log(response);
-			//
-			//								let data = response.json();
-			//
-			//								// Check if response is an array
-			//								if (Array.isArray(data)) {
-			//
-			//									// Map each item to a Person object
-			//									let plans = data.map(item => {
-			//
-			//										return {
-			//											id: item.id,
-			//											name: item.name,
-			//											date: item.date
-			//										};
-			//									});
-			//
-			//									for (var i = 0; i < plans.length; i++) {
-			//
-			//										console.log(plans[i].id);
-			//									}
-			//								} else {
-			//									console.log("error in response - ", response.state);
-			//								}
-			//							}
-			//						})
-			//						.catch(error => {
-			//							console.error(error);
-			//						});
-			//				});
+			async function getSinglePlan() {
+				var id = idInput.value;
+				var encodedId = encodeURIComponent(id);
+				if (id == "") {
+					alert("Id value cannot be empty");
+				}
+				else {
+					const url = `https://localhost:7241/api/Plans/${encodedId}`;
+					const response = await fetch(url);
 
-			getSinglePlansBtn.addEventListener("click",
-				() => {
-					var id = idInput.value;
-					var encodedId = encodeURIComponent(id);
-					//					var url = `/Planning/GetPlanById?id=${encodedId}`;
+					if (response.ok) {
 
-					if (id == "") {
-						alert("Id value cannot be empty");
+						// Deserialize response
+						const plan = await response.json();
+						const html = `<div class="single-plan">
+														<p>${plan.id} - ${plan.name} - ${plan.date.split('T')[0]}</p>
+												</div>`;
+
+
+						document.getElementById('singlePlan').innerHTML = html;
 					} else {
-						const url = `/Plans/${encodedId}`;
-
-						fetch(url,
-							{
-								method: "GET",
-								headers: {
-									'Content-Type': 'application/json'
-								}
-							})
-							.then(response => {
-								if (response.ok) {
-
-								} else {
-									// handle error
-								}
-							})
-							.catch(error => {
-								console.error(error);
-							});
-						idInput.value = "";
+						const html = `<div class="single-plan">
+																	<p>Error: resoponse status: ${response.status}</p>
+															</div>`;
+						console.log(response);
+						document.getElementById('singlePlan').innerHTML = html;
 					}
-				});
+
+				}
+			}
+			//					getSinglePlansBtn.addEventListener("click",
+			//						() => {
+			//							var id = idInput.value;
+			//							var encodedId = encodeURIComponent(id);
+			//							//					var url = `/Planning/GetPlanById?id=${encodedId}`;
+			//
+			//							if (id == "") {
+			//								alert("Id value cannot be empty");
+			//							} else {
+			//								const url = `/Plans/${encodedId}`;
+			//
+			//								fetch(url,
+			//									{
+			//										method: "GET",
+			//										headers: {
+			//											'Content-Type': 'application/json'
+			//										}
+			//									})
+			//									.then(response => {
+			//										if (response.ok) {
+			//
+			//										} else {
+			//											// handle error
+			//										}
+			//									})
+			//									.catch(error => {
+			//										console.error(error);
+			//									});
+			//								idInput.value = "";
+			//							}
+			//						});
 
 		</script>
 	}

@@ -1,5 +1,8 @@
 {
   //GateWay port 7003
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:7241"
+  },
   "Routes": [
     {
       "DownstreamPathTemplate": "/Plans",
@@ -11,7 +14,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Plans",
-      "UpstreamHttpMethod": [ "GET", "POST" ,"DELETE"]
+      "UpstreamHttpMethod": [ "GET", "POST", "DELETE" ]
     },
     {
       "DownstreamPathTemplate": "/Plans/{id}",
@@ -98,7 +101,5 @@
       "UpstreamHttpMethod": [ "HEAD" ]
     }
   ]
-  //"GlobalConfiguration": {
-  //  "BaseUrl": "http://localhost:7004"
-  //}
+
 }
