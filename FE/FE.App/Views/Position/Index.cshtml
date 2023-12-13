@@ -1,0 +1,140 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@model CatheterPosition.Models.CatheterPositionData
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Catheter Position</title>
+	<style>
+		#movableImage {
+			position: absolute;
+			width: 50px;
+			height: 50px;
+			background-color: red;
+		}
+	</style>
+</head>
+
+<body>
+	<button id="StartSim">Start Sim</button>
+	<button id="StopSim">Stop Sim</button>
+	<button id="resetPos">Reset Catheter Position</button>
+	<div id="movableImage">
+	</div>
+	@section Scripts {
+		<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+
+		<script>
+			var connection = new signalR.HubConnectionBuilder()
+				.withUrl("https://localhost:7003/PositionHub")
+				.build();
+
+			connection.start().catch(function (err) {
+				return console.error(err.toString());
+			});
+
+
+			connection.on("PositionReceived", data => {
+				var x = data["x"].toFixed(3);
+				var y = data["y"].toFixed(3);
+				var z = data["z"].toFixed(3);
+
+				var yaw = data["yaw"].toFixed(3);
+				var pitch = data["pitch"].toFixed(3);
+				var roll = data["roll"].toFixed(3);
+
+
+				const locX = document.getElementById("locationX");
+				const locY = document.getElementById("locationY");
+				const locZ = document.getElementById("locationZ");
+
+				const yawLabel = document.getElementById("yaw");
+				const pitchLabel = document.getElementById("pitch");
+				const rollLabel = document.getElementById("roll");
+
+				locX.textContent = x;
+				locY.textContent = y;
+				locZ.textContent = z;
+				yawLabel.textContent = yaw;
+				pitchLabel.textContent = pitch;
+				rollLabel.textContent = roll;
+				var xPos = data["x"] + data["x"] * 1000;
+				var yPos = data["y"] + data["y"] * 1000;
+				
+				$("#movableImage").css({ left: xPos.toString() + "px", top: yPos.toString() + "px" });
+			});
+
+			console.log(connection);
+			const startButton = document.getElementById("StartSim");
+			const stopButton = document.getElementById("StopSim");
+			const resetPosButton = document.getElementById("resetPos");
+
+			startButton.addEventListener("click", () => {
+
+				fetch("/Position/StartSim", {
+					method: "POST"
+				})
+					.then(response => {
+						if (response.ok) {
+							// handle success
+						} else {
+							// handle error
+						}
+					})
+					.catch(error => {
+						console.error(error);
+					});
+			});
+			stopButton.addEventListener("click", () => {
+				fetch("/Position/StopSim", {
+					method: "POST"
+				}).then(response => {
+					if (response.ok) {
+						// handle success
+					} else {
+						// handle error
+					}
+				})
+					.catch(error => {
+						console.error(error);
+					});
+			});
+
+			resetPosButton.addEventListener("click", () => {
+				fetch("/Position/ResetPosition", {
+					method: "GET"
+				}).then(response => {
+					if (response.ok) {
+						// handle success
+					} else {
+						// handle error
+					}
+				})
+					.catch(error => {
+						console.error(error);
+					});
+			});
+		</script>
+
+	}
+
+	<h1>Catheter Position</h1>
+
+	<p>Location: <span id="location"></span></p>
+	<p>X: <label id="locationX"></label></p>
+	<p>Y: <label id="locationY"></label></p>
+	<p>Z: <label id="locationZ"></label></p>
+	<br />
+	<p>Orientation: <span id="orientation"></span></p>
+	<p>Yaw: <label id="yaw"></label></p>
+	<p>Pitch: <label id="pitch"></label></p>
+	<p>Roll: <label id="roll"></label></p>
+
+
+	<script src="/scripts/Position/position_index.js"></script>
+</body>
+</html>

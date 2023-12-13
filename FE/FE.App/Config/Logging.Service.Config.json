@@ -1,0 +1,52 @@
+//"outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}({SourceContext}){NewLine}{Exception}{Assembly}",
+
+{
+  "LoggingChannelsConfig": {
+    "ChannelsData": [
+      {
+        "Id": "Log",
+        "Exchange": "request",
+        "Queue": "",
+        "RoutingKey": "LogRequest"
+      }
+    ]
+  },
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.Console", "Serilog.Sinks.File" ],
+    "MinimumLevel": {
+      "Default": "Debug",
+      "Override": {
+        "Microsoft": "Warning",
+        "Ocelot": "Warning",
+        "System": "Warning"
+      }
+    },
+    "WriteTo": [
+      //{
+      //  "Name": "Console"
+      //},
+      {
+        "Name": "File",
+        "Args": {
+          "path": "..\\..\\..\\..\\Logs\\log-.json",
+          "rollingInterval": "Day",
+          "shared": true,
+          "formatter": "Serilog.Formatting.Json.JsonFormatter, Serilog"
+        }
+      },
+      {
+        "Name": "Seq",
+        "Args": {
+          "ServerUrl" : "http://localhost:8081", 
+          "rollingInterval": "Day",
+          "shared": true,
+          "formatter": "Serilog.Formatting.Json.JsonFormatter, Serilog"
+        }
+      }
+    ],
+    "Enrich": [ "FromLogContext", "WithSourceContext", "WithMachineName", "WithProcessId", "WithProcessName", "WithThreadId", "WithEnvironmentName", "WithSpanId", "WithTraceId"],
+    "Properties": {
+      //"Application": "YourApplicationName"
+    }
+  }
+}

@@ -28,7 +28,8 @@ namespace Planning.Service.Controllers
 			// 	// _ = _messageProducer.SendLogRequest($"[PlanningController::Get] send get all plans request, Channel data:{channel}", LogLevel.Information, _logRequestChannel, _assemblyName);
 			// 	Log.Information($"[PlanningController::Get] send get all plans request, Channel data:{channel}");
 			// }
-			return await _planningService.GetAllAsync();
+			var plans = await _planningService.GetAllAsync();
+			return plans;
 		}
 
 

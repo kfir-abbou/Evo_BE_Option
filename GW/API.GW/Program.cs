@@ -26,7 +26,7 @@ namespace API.GW
 			builder.Services.AddCors(options =>
 			{
 				options.AddPolicy("AllowFrontEnd",
-					b => b.WithOrigins("https://localhost:7121")
+					b => b.WithOrigins("https://localhost:7117")
 						.AllowAnyMethod()
 						.AllowAnyHeader()
 						.AllowCredentials());

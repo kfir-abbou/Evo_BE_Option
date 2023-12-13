@@ -1,8 +1,8 @@
-using FE.App.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using FE.App.Models;
 
-namespace FE.App.Controllers
+namespace MessageBusSystem.FE.Controllers
 {
 	public class HomeController : Controller
 	{

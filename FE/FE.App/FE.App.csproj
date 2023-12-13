@@ -28,6 +28,16 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Infra\Common.Hub\Common.Hub.csproj" />
+	  <ProjectReference Include="..\..\Models\CatheterPosition.Models\CatheterPosition.Models.csproj" />
+	  <ProjectReference Include="..\..\Models\Planning.Models\Planning.Models.csproj" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+	  <Content Update="Config\Logging.Service.Config.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 
 </Project>

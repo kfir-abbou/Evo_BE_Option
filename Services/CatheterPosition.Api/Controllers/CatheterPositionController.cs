@@ -141,22 +141,50 @@ namespace CatheterPosition.Api.Controllers
 		}
 
 
+
+		private int rightCount = 0, downCount = 0, leftCount = 0, upCount = 0;
 		private void onCatheterTimerElapsed(object sender, ElapsedEventArgs e)
 		{
 			//  TODO: get channels once!
 			var moveCatheterChannelFound = _positionChannelConfig.TryGetChannelData("MoveCatheter", out var moveCatheterChannel);
 			var getPositionChannelFound = _positionChannelConfig.TryGetChannelData("GetCurrentPosition", out var getPositionChannel);
-
-			var moveRequest = new MoveCatheterCommand(Guid.NewGuid().ToString(), MoveDirection.DOWN, .1);
-			var positionRequest = new CommandMessage(Guid.NewGuid().ToString(), CommandType.GET_CATHETER_POSITION);
-
-			if (moveCatheterChannelFound)
+			MoveCatheterCommand moveRequest = null;
+			if (rightCount < 500)
 			{
-				_ = _messageProducer.SendMessageToTopic(moveRequest, moveCatheterChannel);
+				moveRequest = new MoveCatheterCommand(Guid.NewGuid().ToString(), MoveDirection.RIGHT, .1);
 			}
-			if (getPositionChannelFound)
+			else if (downCount < 250)
 			{
-				_ = _messageProducer.SendMessageToTopic(positionRequest, getPositionChannel);
+				moveRequest = new MoveCatheterCommand(Guid.NewGuid().ToString(), MoveDirection.DOWN, .1);
+			}
+			else if (leftCount < 500)
+			{
+				moveRequest = new MoveCatheterCommand(Guid.NewGuid().ToString(), MoveDirection.LEFT, .1);
+			}
+			else if (upCount < 250)
+			{
+				moveRequest = new MoveCatheterCommand(Guid.NewGuid().ToString(), MoveDirection.UP, .1);
+			}
+			else
+			{
+				rightCount = 0;
+				downCount = 0;
+				leftCount = 0;
+				upCount = 0;
+			}
+
+			if (moveRequest != null)
+			{
+				var positionRequest = new CommandMessage(Guid.NewGuid().ToString(), CommandType.GET_CATHETER_POSITION);
+
+				if (moveCatheterChannelFound)
+				{
+					_ = _messageProducer.SendMessageToTopic(moveRequest, moveCatheterChannel);
+				}
+				if (getPositionChannelFound)
+				{
+					_ = _messageProducer.SendMessageToTopic(positionRequest, getPositionChannel);
+				}
 			}
 		}
 

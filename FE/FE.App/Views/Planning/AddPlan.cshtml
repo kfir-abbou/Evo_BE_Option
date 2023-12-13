@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Add Plan</title>
+</head>
+<body>
+
+	<h2>Add Plan</h2>
+
+
+	<label for="planId">Plan Id:</label>
+	<input type="text" id="planId" required>
+
+	<label for="planName">Plan Name:</label>
+	<input type="text" id="planName" required>
+
+	<label for="planDate">Plan Date:</label>
+	<input type="date" id="planDate" required>
+
+	<button onclick="addPlan()">Add Plan</button>
+
+	<script>
+		function addPlan() {
+
+			//			document.getElementById("planId").value = 987987;
+			//			document.getElementById("planName").value = "Demo Plan";
+			//			document.getElementById("planDate").value = "2022-03-03";
+
+			// Get values from the input fields
+			var id = document.getElementById("planId").value;
+			var name = document.getElementById("planName").value;
+			var date = document.getElementById("planDate").value;
+
+			// Create a Plan object
+			var plan = {
+				Id: id,
+				Name: name,
+				Date: date
+			};
+
+			// Make a POST request to add the plan
+			fetch("/Planning/AddNewPlan", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(plan)
+			})
+				.then(response => {
+					if (response.ok) {
+						//						return response.json();
+					} else {
+						throw new Error("Failed to add plan");
+					}
+				})
+				.then(data => {
+					// Handle the success response
+					console.log("Plan added successfully:", data);
+				})
+				.catch(error => {
+					// Handle errors
+					console.error("Error adding plan:", error.message);
+				});
+
+			document.getElementById("planId").value = '';
+			document.getElementById("planName").value = '';
+			document.getElementById("planDate").value = '';
+
+		}
+	</script>
+
+</body>
+</html>
